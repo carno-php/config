@@ -17,6 +17,9 @@ use Carno\Consul\Types\Agent;
 use Carno\Promise\Promise;
 use Carno\Promise\Promised;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Consul
 {
     /**

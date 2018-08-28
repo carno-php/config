@@ -9,10 +9,13 @@
 namespace Carno\Config\Tests\Features;
 
 use Carno\Config\Config;
+use Carno\Config\Tests\Chips\GCAssert;
 use PHPUnit\Framework\TestCase;
 
 class OverriderTest extends TestCase
 {
+    use GCAssert;
+
     public function testWatching()
     {
         $conf = new Config;
@@ -42,6 +45,6 @@ class OverriderTest extends TestCase
 
         $overrider->unwatch();
 
-        $this->assertEquals(0, gc_collect_cycles());
+        $this->assertNoGC();
     }
 }

@@ -9,10 +9,13 @@
 namespace Carno\Config\Tests\Features;
 
 use Carno\Config\Config;
+use Carno\Config\Tests\Chips\GCAssert;
 use PHPUnit\Framework\TestCase;
 
 class JoiningTest extends TestCase
 {
+    use GCAssert;
+
     public function testFollow()
     {
         $master = new Config;
@@ -62,6 +65,6 @@ class JoiningTest extends TestCase
         $this->assertNull($master->get('t1'));
 
         // gc check
-        $this->assertEquals(0, gc_collect_cycles());
+        $this->assertNoGC();
     }
 }

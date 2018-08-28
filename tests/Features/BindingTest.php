@@ -9,12 +9,15 @@
 namespace Carno\Config\Tests\Features;
 
 use Carno\Config\Config;
+use Carno\Config\Tests\Chips\GCAssert;
 use Carno\Config\Tests\Options\OptA;
 use Carno\Config\Tests\Options\OptB;
 use PHPUnit\Framework\TestCase;
 
 class BindingTest extends TestCase
 {
+    use GCAssert;
+
     public function testOptionsSync()
     {
         $conf = new Config;
@@ -49,6 +52,6 @@ class BindingTest extends TestCase
         $conf->unbind($optA);
         $conf->unbind($optB);
 
-        $this->assertEquals(0, gc_collect_cycles());
+        $this->assertNoGC();
     }
 }
