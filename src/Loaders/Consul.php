@@ -25,11 +25,6 @@ class Consul
     /**
      * @var string
      */
-    private const PREFIX = 'service/conf';
-
-    /**
-     * @var string
-     */
     private const KEYS = '*';
 
     /**
@@ -48,14 +43,21 @@ class Consul
     private $config = null;
 
     /**
+     * @var string
+     */
+    private $prefix = null;
+
+    /**
      * Consul constructor.
      * @param Agent $agent
      * @param Config $source
+     * @param string $prefix
      */
-    public function __construct(Agent $agent, Config $source)
+    public function __construct(Agent $agent, Config $source, string $prefix = 'conf')
     {
         $this->agent = $agent;
         $this->config = $source;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -63,16 +65,12 @@ class Consul
      */
     public function connect() : Promised
     {
-        (new KVStore($this->agent))
-            ->watching(
-                sprintf('%s/%s', self::PREFIX, $this->config->scoped()),
-                self::KEYS,
-                $this->chan = new Channel
-            )
-        ;
+        $dir = $this->folder();
 
-        ($await = Promise::deferred())->then(function () {
-            logger('config')->info('Config watcher is connected', ['dir' => $this->config->scoped()]);
+        (new KVStore($this->agent))->watching($dir, self::KEYS, $this->chan = new Channel);
+
+        ($await = Promise::deferred())->then(static function () use ($dir) {
+            logger('config')->info('Config watcher is connected', ['dir' => $dir]);
         });
 
         new Worker($this->chan, function (array $changes) use ($await) {
@@ -90,12 +88,26 @@ class Consul
      */
     public function disconnect() : Promised
     {
+        $dir = $this->folder();
+
         $this->chan->close();
 
-        ($wait = $this->chan->closed())->then(function () {
-            logger('config')->info('Config watcher is closed', ['dir' => $this->config->scoped()]);
+        ($wait = $this->chan->closed())->then(static function () use ($dir) {
+            logger('config')->info('Config watcher is closed', ['dir' => $dir]);
         });
 
         return $wait;
+    }
+
+    /**
+     * @return string
+     */
+    private function folder() : string
+    {
+        if (empty($this->config->scoped())) {
+            return $this->prefix;
+        } else {
+            return sprintf('%s/%s', $this->prefix, $this->config->scoped());
+        }
     }
 }
