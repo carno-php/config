@@ -12,6 +12,7 @@ use Carno\Config\Config;
 use Carno\Config\Tests\Chips\GCAssert;
 use Carno\Config\Tests\Options\OptA;
 use Carno\Config\Tests\Options\OptB;
+use Carno\Config\Tests\Options\OptC;
 use PHPUnit\Framework\TestCase;
 
 class BindingTest extends TestCase
@@ -51,6 +52,31 @@ class BindingTest extends TestCase
 
         $conf->unbind($optA);
         $conf->unbind($optB);
+
+        $this->assertNoGC();
+    }
+
+    public function testNullRecover()
+    {
+        $conf = new Config;
+
+        $opt = new OptC;
+        $def = $opt->f5;
+
+        $conf->bind($opt, ['set.f.5' => 'f5']);
+
+        $this->assertEquals($def, $opt->f5);
+
+        $conf->set('set.f.5', $upd1 = 2000);
+        $this->assertEquals($upd1, $opt->f5);
+
+        $conf->set('set.f.5', $upd2 = 3000);
+        $this->assertEquals($upd2, $opt->f5);
+
+        $conf->set('set.f.5', null);
+        $this->assertEquals($upd2, $opt->f5);
+
+        $conf->unbind($opt);
 
         $this->assertNoGC();
     }

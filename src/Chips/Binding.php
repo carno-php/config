@@ -9,6 +9,7 @@
 namespace Carno\Config\Chips;
 
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 trait Binding
@@ -82,6 +83,7 @@ trait Binding
      * @param object $options
      * @param string $name
      * @param mixed $value
+     * @throws ReflectionException
      */
     private function syncPTValue(object $options, string $name, $value) : void
     {
@@ -92,13 +94,16 @@ trait Binding
          */
 
         $property =
-            $this->references[$oid][$name] ??
-            $this->references[$oid][$name] = ((new ReflectionClass(get_class($options)))->getProperty($name) ?: null)
+            $this->references[$oid][$name] ?? (
+                $this->references[$oid][$name] = (
+                    (new ReflectionClass(get_class($options)))->getProperty($name) ?: null
+                )
+            )
         ;
 
         if ($property) {
             $property->isPublic() || $property->setAccessible(true);
-            $property->setValue($options, $value);
+            is_null($value) || $property->setValue($options, $value);
         }
     }
 }
