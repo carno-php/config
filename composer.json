@@ -13,9 +13,7 @@
     "psr-4": {
       "Carno\\Config\\": "src"
     },
-    "files": [
-      "src/utils.php"
-    ]
+    "files": ["utils.php"]
   },
   "autoload-dev": {
     "psr-4": {
