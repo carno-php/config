@@ -18,8 +18,8 @@ class JoiningTest extends TestCase
 
     public function testFollow()
     {
-        $master = new Config;
-        $slaver = new Config;
+        $master = new Config();
+        $slaver = new Config();
 
         $slaver->joining($master);
 

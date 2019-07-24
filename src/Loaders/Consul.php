@@ -67,7 +67,7 @@ class Consul
     {
         $dir = $this->folder();
 
-        (new KVStore($this->agent))->watching($dir, self::KEYS, $this->chan = new Channel);
+        (new KVStore($this->agent))->watching($dir, self::KEYS, $this->chan = new Channel());
 
         ($await = Promise::deferred())->then(static function () use ($dir) {
             logger('config')->info('Config watcher is connected', ['dir' => $dir]);

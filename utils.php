@@ -6,14 +6,16 @@
  * Time: 6:33 PM
  */
 
+namespace Carno\Config;
+
 /**
  * default config scope should be server name of detected
  * you can also assigned to others e.g. "global" "biz1"
  * @param string $scope
- * @return \Carno\Config\Config
+ * @return Config
  */
-function config(string $scope = '_') : \Carno\Config\Config
+function conf(string $scope = '_') : Config
 {
     static $sources = [];
-    return $sources[$scope] ?? $sources[$scope] = (new \Carno\Config\Config)->assigned($scope);
+    return $sources[$scope] ?? $sources[$scope] = (new Config())->assigned($scope);
 }

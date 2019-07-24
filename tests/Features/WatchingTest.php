@@ -15,7 +15,7 @@ class WatchingTest extends TestCase
 {
     public function testWatching()
     {
-        $conf = new Config;
+        $conf = new Config();
 
         $val = null;
 

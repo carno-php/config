@@ -19,5 +19,17 @@ use Carno\Config\Chips\Watching;
 
 class Config
 {
-    use Memory, Scoping, Getter, Setter, Joining, Binding, Watching, Overrides;
+    use Scoping;
+
+    use Memory;
+
+    use Getter;
+    use Setter;
+
+    use Binding;
+    use Joining;
+
+    use Watching;
+
+    use Overrides;
 }

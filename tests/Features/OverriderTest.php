@@ -18,7 +18,7 @@ class OverriderTest extends TestCase
 
     public function testWatching()
     {
-        $conf = new Config;
+        $conf = new Config();
 
         $last = 0;
 

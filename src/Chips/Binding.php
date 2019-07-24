@@ -65,11 +65,11 @@ trait Binding
         $prefix && $prefix .= '/';
         foreach ($map as $cKey => $pName) {
             if (is_array($pName)) {
-                $this->bindPTKeys($options, $prefix.$cKey, $pName);
+                $this->bindPTKeys($options, $prefix . $cKey, $pName);
             } else {
                 $this->bound[spl_object_id($options)][] =
                     $this->watching(
-                        $prefix.$cKey,
+                        $prefix . $cKey,
                         function ($value) use ($options, $pName) {
                             $this->syncPTValue($options, $pName, $value);
                         }

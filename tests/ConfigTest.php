@@ -8,6 +8,7 @@
 
 namespace Carno\Config\Tests;
 
+use function Carno\Config\conf;
 use Carno\Config\Config;
 use PHPUnit\Framework\TestCase;
 
@@ -15,8 +16,8 @@ class ConfigTest extends TestCase
 {
     public function testUtils()
     {
-        $c1 = config('s1');
-        $c2 = config('s2');
+        $c1 = conf('s1');
+        $c2 = conf('s2');
 
         $this->assertInstanceOf(Config::class, $c1);
         $this->assertInstanceOf(Config::class, $c2);
@@ -26,7 +27,7 @@ class ConfigTest extends TestCase
 
     public function testBases()
     {
-        $conf = new Config;
+        $conf = new Config();
 
         $this->assertFalse($conf->has('key1'));
         $this->assertNull($conf->get('key1'));
@@ -43,7 +44,7 @@ class ConfigTest extends TestCase
 
     public function testTypes()
     {
-        $conf = new Config;
+        $conf = new Config();
 
         $conf->set('key', '1');
 

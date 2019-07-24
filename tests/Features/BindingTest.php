@@ -21,10 +21,10 @@ class BindingTest extends TestCase
 
     public function testOptionsSync()
     {
-        $conf = new Config;
+        $conf = new Config();
 
-        $optA = new OptA;
-        $optB = new OptB;
+        $optA = new OptA();
+        $optB = new OptB();
 
         $conf->bind($optA, ['opts' => ['set.f.1' => 'f1', 'set.f.2' => 'f2']]);
         $conf->bind($optB, ['opts' => ['set.f.1' => 'f3', 'set.f.2' => 'f4']]);
@@ -58,9 +58,9 @@ class BindingTest extends TestCase
 
     public function testNullRecover()
     {
-        $conf = new Config;
+        $conf = new Config();
 
-        $opt = new OptC;
+        $opt = new OptC();
         $def = $opt->f5;
 
         $conf->bind($opt, ['set.f.5' => 'f5']);
