@@ -35,7 +35,7 @@ trait Watching
      */
     public function watching(string $key, Closure $observer) : string
     {
-        $wid = spl_object_id($observer);
+        $wid = spl_object_hash($observer);
 
         if ($key === '*') {
             $this->replicator[$wid] = $observer;

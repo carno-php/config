@@ -27,9 +27,9 @@ trait Binding
     /**
      * @param object $options
      * @param array $map
-     * @return mixed
+     * @return object
      */
-    public function bind(object $options, array $map) : object
+    public function bind($options, array $map)
     {
         $this->unbind($options);
 
@@ -42,9 +42,9 @@ trait Binding
      * @param object $options
      * @return bool
      */
-    public function unbind(object $options) : bool
+    public function unbind($options) : bool
     {
-        if ($wss = $this->bound[$oid = spl_object_id($options)] ?? []) {
+        if ($wss = $this->bound[$oid = spl_object_hash($options)] ?? []) {
             unset($this->bound[$oid]);
             unset($this->references[$oid]);
             foreach ($wss as $wid) {
@@ -60,14 +60,14 @@ trait Binding
      * @param string $prefix
      * @param array $map
      */
-    private function bindPTKeys(object $options, string $prefix, array $map) : void
+    private function bindPTKeys($options, string $prefix, array $map) : void
     {
         $prefix && $prefix .= '/';
         foreach ($map as $cKey => $pName) {
             if (is_array($pName)) {
                 $this->bindPTKeys($options, $prefix . $cKey, $pName);
             } else {
-                $this->bound[spl_object_id($options)][] =
+                $this->bound[spl_object_hash($options)][] =
                     $this->watching(
                         $prefix . $cKey,
                         function ($value) use ($options, $pName) {
@@ -85,9 +85,9 @@ trait Binding
      * @param mixed $value
      * @throws ReflectionException
      */
-    private function syncPTValue(object $options, string $name, $value) : void
+    private function syncPTValue($options, string $name, $value) : void
     {
-        $oid = spl_object_id($options);
+        $oid = spl_object_hash($options);
 
         /**
          * @var ReflectionProperty $property

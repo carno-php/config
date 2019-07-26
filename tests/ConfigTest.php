@@ -22,7 +22,7 @@ class ConfigTest extends TestCase
         $this->assertInstanceOf(Config::class, $c1);
         $this->assertInstanceOf(Config::class, $c2);
 
-        $this->assertNotEquals(spl_object_id($c1), spl_object_id($c2));
+        $this->assertNotEquals(spl_object_hash($c1), spl_object_hash($c2));
     }
 
     public function testBases()
