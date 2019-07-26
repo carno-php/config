@@ -27,7 +27,7 @@ trait Binding
     /**
      * @param object $options
      * @param array $map
-     * @return object
+     * @return object|mixed
      */
     public function bind($options, array $map)
     {
